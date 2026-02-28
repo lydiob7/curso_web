@@ -24,4 +24,32 @@ function storageAvailable(type) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {});
+document.addEventListener("DOMContentLoaded", () => {
+  // Elementos del DOM
+  const form = document.getElementById("chat-form");
+  const input = document.getElementById("new-message");
+  const messagesList = document.querySelector(".messages-list");
+
+  // Nos fijamos primero que el local storage esté disponible en el navegador
+  if (!storageAvailable("localStorage")) {
+    alert("LocalStorage no está disponible en este navegador");
+    return;
+  }
+
+  // Manejo del submit del formulario
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const message = input.value;
+
+    // Acá enviaríamos el mensaje, lo guardariamos en la db o algun otro tipo de persistencia
+    console.log("Mensaje enviado:", message);
+  });
+
+  // Escuchamos cuando cambia el input
+  input.addEventListener("input", (event) => {
+    const value = event.target.value;
+
+    console.log("Escribiendo: ", value);
+  });
+});
