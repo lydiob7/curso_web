@@ -8,6 +8,34 @@
     <link href="index.css" rel="stylesheet" />
   </head>
   <body>
-    <h1>Local Storage</h1>
+    <h1>Chat con Local Storage</h1>
+
+    <form id="chat-form">
+      <div class="chat-container">
+        <div class="messages-list">
+          <div class="message">
+            <span class="message-author">Alguien</span>
+            <span class="message-content">Hola, qué tal?</span>
+          </div>
+
+          <div class="message message--own">
+            <span class="message-author">Yo</span>
+            <span class="message-content"
+              >Todo bien y vos? Necesito contarte algo super importante!</span
+            >
+          </div>
+        </div>
+
+        <div class="input-row">
+          <input
+            id="new-message"
+            type="text"
+            placeholder="Escribí un mensaje…"
+            autocomplete="off"
+          />
+          <button type="submit">Enviar</button>
+        </div>
+      </div>
+    </form>
   </body>
 </html>
