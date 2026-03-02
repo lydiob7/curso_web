@@ -24,6 +24,22 @@ function storageAvailable(type) {
   }
 }
 
+function renderNewMessage(message, messagesContainer) {
+  if (!messagesContainer || !message?.trim()?.length) return;
+  const newMessageElement = document.createElement("div");
+  newMessageElement.classList.add("message");
+  newMessageElement.classList.add("message--own");
+  const authorElement = document.createElement("span");
+  authorElement.classList.add("message-author");
+  authorElement.innerText = "Yo";
+  const messageBodyElement = document.createElement("span");
+  messageBodyElement.classList.add("message-content");
+  messageBodyElement.innerText = message;
+  newMessageElement.appendChild(authorElement);
+  newMessageElement.appendChild(messageBodyElement);
+  messagesContainer.appendChild(newMessageElement);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   // Elementos del DOM
   const form = document.getElementById("chat-form");
@@ -43,7 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const message = input.value;
 
     // Acá enviaríamos el mensaje, lo guardariamos en la db o algun otro tipo de persistencia
-    console.log("Mensaje enviado:", message);
+    renderNewMessage(message, messagesList);
+    input.value = "";
   });
 
   // Escuchamos cuando cambia el input
