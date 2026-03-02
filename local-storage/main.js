@@ -24,6 +24,25 @@ function storageAvailable(type) {
   }
 }
 
+function renderNewMessage(message, messagesContainer) {
+  if (!messagesContainer || !message?.trim()?.length) return;
+  const newMessageElement = document.createElement("div");
+  newMessageElement.classList.add("message");
+  newMessageElement.classList.add("message--own");
+  const authorElement = document.createElement("span");
+  authorElement.classList.add("message-author");
+  authorElement.innerText = "Yo";
+  const messageBodyElement = document.createElement("span");
+  messageBodyElement.classList.add("message-content");
+  messageBodyElement.innerText = message;
+  newMessageElement.appendChild(authorElement);
+  newMessageElement.appendChild(messageBodyElement);
+  messagesContainer.appendChild(newMessageElement);
+}
+
+const MESSAGE_KEY = "draft-message";
+const MESSAGES_LIST_KEY = "messages-list";
+
 document.addEventListener("DOMContentLoaded", () => {
   // Elementos del DOM
   const form = document.getElementById("chat-form");
@@ -43,13 +62,35 @@ document.addEventListener("DOMContentLoaded", () => {
     const message = input.value;
 
     // Acá enviaríamos el mensaje, lo guardariamos en la db o algun otro tipo de persistencia
-    console.log("Mensaje enviado:", message);
+    renderNewMessage(message, messagesList);
+    input.value = "";
+    localStorage.removeItem(MESSAGE_KEY);
+    const previousMessages = localStorage.getItem(MESSAGES_LIST_KEY);
+    const messages = JSON.stringify([
+      ...(previousMessages ? JSON.parse(previousMessages) : []),
+      message,
+    ]);
+    localStorage.setItem(MESSAGES_LIST_KEY, messages);
   });
+
+  const previousMessages = localStorage.getItem(MESSAGES_LIST_KEY);
+  if (previousMessages) {
+    for (const message of JSON.parse(previousMessages)) {
+      renderNewMessage(message, messagesList);
+    }
+  }
+
+  const previousDraft = localStorage.getItem(MESSAGE_KEY);
+  if (previousDraft) {
+    input.value = previousDraft;
+  }
 
   // Escuchamos cuando cambia el input
   input.addEventListener("input", (event) => {
     const value = event.target.value;
 
-    console.log("Escribiendo: ", value);
+    if (value) {
+      localStorage.setItem(MESSAGE_KEY, value);
+    }
   });
 });
